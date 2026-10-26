@@ -169,7 +169,7 @@ else:
 # ---------------------------------------------------------------------------
 # Header & Top-Level KPI Metrics
 # ---------------------------------------------------------------------------
-st.title("🎯 Rubric-Aware Project Quality Intelligence & Mentor Calibration Engine")
+st.title("Rubric-Aware Project Quality Intelligence & Mentor Calibration Engine")
 st.markdown(
     "Automated multi-dimensional rubric scoring powered by **Sentence-Transformers**, "
     "**Ensemble Epistemic Uncertainty**, and **SHAP Explainability**."
@@ -194,7 +194,7 @@ st.divider()
 col_queue, col_inspector = st.columns([1.15, 1.35], gap="large")
 
 with col_queue:
-    st.subheader("📋 Student Submission Queue")
+    st.subheader("Student Submission Queue")
     display_cols = [
         "submission_id",
         "student_id",
@@ -225,7 +225,7 @@ with col_queue:
         st.stop()
 
     selected_sub_id = st.selectbox(
-        "🔍 Select Submission to Inspect & Calibrate:",
+        "Select Submission to Inspect & Calibrate:",
         options=available_ids,
     )
 
@@ -233,7 +233,7 @@ with col_queue:
     selected_pos_idx = int(eval_df.index[eval_df["submission_id"] == selected_sub_id][0])
 
     # Submission Signals Card
-    st.markdown("#### 📄 Extracted Submission Signals")
+    st.markdown("#### Extracted Submission Signals")
     sig1, sig2, sig3, sig4 = st.columns(4)
     sig1.metric("Cyclomatic Complexity", selected_row["code_complexity_score"])
     sig2.metric("Test Coverage", f"{selected_row['test_coverage_ratio'] * 100:.1f}%")
@@ -248,7 +248,7 @@ with col_queue:
 # Right Column: Human-in-the-Loop (HITL) Calibration & SHAP Explainability
 # ---------------------------------------------------------------------------
 with col_inspector:
-    st.subheader(f"🧠 AI Evaluation & SHAP Explainability: `{selected_sub_id}`")
+    st.subheader(f"AI Evaluation & SHAP Explainability: `{selected_sub_id}`")
 
     if selected_row["max_uncertainty"] >= uncertainty_threshold:
         st.warning(
@@ -263,7 +263,7 @@ with col_inspector:
         )
 
     # SHAP Explanation Tabs
-    tab_local, tab_global = st.tabs(["📊 Local SHAP Waterfall (This Submission)", "🌐 Global Feature Importance"])
+    tab_local, tab_global = st.tabs(["Local SHAP Waterfall (This Submission)", "🌐 Global Feature Importance"])
 
     with tab_local:
         rubric_choice = st.radio(
@@ -296,7 +296,7 @@ with col_inspector:
     # -----------------------------------------------------------------------
     # Human-in-the-Loop Mentor Override / Approval Form
     # -----------------------------------------------------------------------
-    st.markdown("#### 👨‍🏫 Mentor Calibration & Override Console")
+    st.markdown("#### Mentor Calibration & Override Console")
 
     existing_review = st.session_state["mentor_reviews"].get(selected_sub_id, {})
     default_tech = float(existing_review.get("final_technical_correctness", selected_row["pred_technical_correctness"]))
@@ -370,5 +370,5 @@ with col_inspector:
 
 # Show Calibration Audit Log Drawer at Bottom
 if FEEDBACK_LOG_PATH.exists():
-    with st.expander("🗂️ View Persistent Mentor Calibration Audit Log (`data/feedback/mentor_calibration_log.csv`)"):
+    with st.expander("View Persistent Mentor Calibration Audit Log (`data/feedback/mentor_calibration_log.csv`)"):
         st.dataframe(pd.read_csv(FEEDBACK_LOG_PATH), use_container_width=True)
