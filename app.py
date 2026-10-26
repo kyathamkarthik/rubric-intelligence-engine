@@ -20,7 +20,7 @@ from scripts.generate_data import generate_synthetic_dataset
 # ---------------------------------------------------------------------------
 st.set_page_config(
     page_title="Rubric Quality Intelligence & Mentor Calibration",
-    page_icon="🎯",
+    page_icon="",
     layout="wide",
 )
 

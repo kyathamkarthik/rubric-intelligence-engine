@@ -4,26 +4,22 @@ Static AST Code Analyzer to extract real rubric signals from student Python subm
 
 import ast
 
-
 BRANCH_NODES = (
-    ast.If,
-    ast.For,
-    ast.AsyncFor,
-    ast.While,
-    ast.ExceptHandler,
-    ast.With,
-    ast.AsyncWith,
-    ast.Assert,
-    ast.BoolOp,
+    ast.If, ast.For, ast.AsyncFor, ast.While, 
+    ast.ExceptHandler, ast.With, ast.AsyncWith, 
+    ast.Assert, ast.BoolOp
 )
-
 
 def extract_ast_metrics(source_code: str) -> dict[str, float]:
     """
     Parses raw Python source code and extracts cyclomatic complexity,
     docstring coverage ratio, and structural lint indicators.
     """
-    tree = ast.parse(source_code)
+    try:
+        tree = ast.parse(source_code)
+    except SyntaxError:
+        # Fallback for unparseable code
+        return {"code_complexity_score": 25.0, "docstring_coverage": 0.0, "lint_warning_count": 99}
 
     functions = [
         node for node in ast.walk(tree)
@@ -37,15 +33,18 @@ def extract_ast_metrics(source_code: str) -> dict[str, float]:
         documented = sum(1 for fn in functions if ast.get_docstring(fn) is not None)
         docstring_coverage = round(documented / len(functions), 3)
 
-    # 2. Average McCabe Cyclomatic Complexity per Function
+    # 2. Average McCabe Cyclomatic Complexity
     complexities = []
     for fn in functions:
         branch_count = sum(1 for node in ast.walk(fn) if isinstance(node, BRANCH_NODES))
         complexities.append(1 + branch_count)
 
-    avg_complexity = round(float(sum(complexities) / max(len(complexities), 1)), 2)
+    if not complexities:
+        avg_complexity = 1.0
+    else:
+        avg_complexity = round(float(sum(complexities) / len(complexities)), 2)
 
-    # 3. Structural Anti-Pattern Warnings (bare excepts, overly long functions)
+    # 3. Structural Anti-Pattern Warnings
     bare_excepts = sum(
         1 for node in ast.walk(tree)
         if isinstance(node, ast.ExceptHandler) and node.type is None
