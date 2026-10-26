@@ -1,0 +1,59 @@
+# ---------------------------------------------------------------------------
+# Python Bytecode & Packaging Artifacts
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ---------------------------------------------------------------------------
+# Virtual Environments
+# ---------------------------------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+.conda/
+
+# ---------------------------------------------------------------------------
+# Synthetic Datasets, Feedback Logs & Model Artifacts
+# ---------------------------------------------------------------------------
+data/raw/*.csv
+data/raw/*.parquet
+data/processed/
+data/feedback/*.csv
+*.pkl
+*.joblib
+*.onnx
+!data/.gitkeep
+
+# ---------------------------------------------------------------------------
+# HuggingFace / Sentence-Transformers Local Cache
+# ---------------------------------------------------------------------------
+.cache/
+models/checkpoints/
+sentence_transformers_cache/
+
+# ---------------------------------------------------------------------------
+# Streamlit Local Configuration & Secrets
+# ---------------------------------------------------------------------------
+.streamlit/secrets.toml
+.streamlit/config.toml
+
+# ---------------------------------------------------------------------------
+# Testing, Profiling & IDE Files
+# ---------------------------------------------------------------------------
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
