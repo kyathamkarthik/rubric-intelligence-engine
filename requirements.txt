@@ -6,3 +6,4 @@ pandas>=2.2.0
 numpy>=1.26.0
 matplotlib>=3.9.0
 mapie>=0.8.0
+pingouin>=0.5.3
