@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  rubric-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rubric-engine
+    ports:
+      - "8501:8501"
+    volumes:
+      # Bind mount to persist calibration logs and data across container restarts
+      - ./data:/app/data
+    environment:
+      # Set timezone matching your local environment
+      - TZ=Asia/Kolkata
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
